@@ -1,8 +1,13 @@
 # AgroAssist: AI-Powered Agricultural Advisory System
 
+
 **AgroAssist** is a domain-specific Large Language Model (LLM) fine-tuned for agricultural advisory services. Built on TinyLlama-1.1B-Chat-v1.0 and optimized using LoRA (Low-Rank Adaptation), it provides expert guidance on farming, crop management, soil health, pest control, and irrigation techniques.
 
+**Live Chatbot**: Try AgroAssist at [https://huggingface.co/spaces/pam-pam29/AGROASSIST](https://huggingface.co/spaces/pam-pam29/AGROASSIST)
+**Demo** 
+
 ---
+
 
 ## Overview
 
@@ -16,6 +21,12 @@ AgroAssist addresses the critical challenge of agricultural knowledge access in 
 - **Comprehensive Coverage**: Guidance on crops, soil, pests, irrigation, and farming techniques
 - **Scalable**: Can assist unlimited farmers simultaneously
 
+### Interactive Chat Interface
+
+![Gradio Interface]](Images/Screenshot%202026-02-16%20173818.png)
+*AgroAssist chat interface showing real-time agricultural advisory*
+
+---
 
 ## Problem Statement
 
@@ -122,7 +133,6 @@ dataset = load_dataset("Mahesh2841/Agriculture", split="train")
 | Testing Examples | 153 |
 | Data Reduction | 74.2% |
 
-
 ---
 
 ## Fine-Tuning Methodology
@@ -146,34 +156,11 @@ LoRA is a parameter-efficient fine-tuning technique that adds trainable low-rank
 3. **Quality Preservation**: Maintains base model capabilities
 4. **Practical**: Enables training on consumer GPUs
 
-#### LoRA Configuration
-
-```python
-LoraConfig(
-    r=64,                    # Rank of low-rank matrices
-    lora_alpha=128,          # Scaling factor (typically 2x rank)
-    target_modules=[         # Attention and MLP layers
-        "q_proj", "k_proj", "v_proj", "o_proj",
-        "gate_proj", "up_proj", "down_proj"
-    ],
-    lora_dropout=0.1,        # Dropout for regularization
-    bias="none",             # No bias adaptation
-    task_type="CAUSAL_LM"    # Causal language modeling
-)
-```
 
 ### Quantization for Memory Efficiency
 
-I used 4-bit NormalFloat (NF4) quantization to reduce memory usage by approximately 75%:
+We use 4-bit NormalFloat (NF4) quantization to reduce memory usage by approximately 75%:
 
-```python
-BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_compute_dtype=torch.bfloat16
-)
-```
 
 **Benefits:**
 - Original model: ~4.4 GB memory
@@ -182,7 +169,19 @@ BitsAndBytesConfig(
 
 ### Training Configuration
 
+#### Chat Template Format
 
+We format data using TinyLlama's chat template:
+
+```
+<|system|>
+You are AgroAssist, an expert agricultural advisory system. You provide accurate, 
+practical, and evidence-based guidance on farming, crops, soil, pests, and irrigation.
+</s>
+<|user|>
+{question}</s>
+<|assistant|>
+{answer}</s>
 ```
 
 #### Tokenization Strategy
@@ -198,53 +197,6 @@ Tokenization Configuration:
 
 This ensures the model learns to generate appropriate answers without being penalized for the question text.
 
-### Training Hyperparameters
-
-We conducted systematic experiments to find optimal hyperparameters:
-
-#### Baseline Configuration (Best Overall)
-
-```python
-Training Configuration:
-- Learning Rate: 2e-4
-- Batch Size: 4 (per device)
-- Gradient Accumulation Steps: 4
-- Effective Batch Size: 16
-- Epochs: 3
-- Warmup Steps: 100
-- Weight Decay: 0.01
-- LR Scheduler: Cosine
-- Optimizer: Paged AdamW 8-bit
-- Mixed Precision: FP16
-```
-
-#### Extended Training Configuration (Best Performance)
-
-```python
-Extended Training (Best Metrics):
-- Learning Rate: 2e-4
-- Batch Size: 2
-- Gradient Accumulation Steps: 8
-- Effective Batch Size: 16
-- Epochs: 5
-- Warmup Steps: 150
-- Other parameters: Same as baseline
-```
-
-### Reproducibility
-
-All experiments use controlled random seeds:
-
-```python
-SEED = 42
-np.random.seed(SEED)
-torch.manual_seed(SEED)
-torch.cuda.manual_seed_all(SEED)
-```
-
-Configuration files and checkpoints are saved for each experiment to ensure full reproducibility.
-
----
 
 ## Performance Metrics
 
@@ -303,8 +255,6 @@ We evaluate model performance using multiple complementary metrics to comprehens
 | Perplexity | 3.88 | High model confidence |
 | Avg Response Length | 85.8 words | Within optimal range |
 
-### Performance Visualization
-
 ### Comparison: Base Model vs Fine-Tuned Model
 
 The fine-tuning process demonstrates significant improvements in agricultural domain expertise:
@@ -328,10 +278,15 @@ The fine-tuning process demonstrates significant improvements in agricultural do
 - 10GB+ free disk space
 - Git installed on your system
 
+### Option 1: Try the Live Demo (No Installation Required)
 
-### Google Colab (Recommended for Quick Testing)
+Visit our Hugging Face Space: [https://huggingface.co/spaces/pam-pam29/AGROASSIST](https://huggingface.co/spaces/pam-pam29/AGROASSIST)
 
-1. **Open Notebook**: Click the Colab badge at the top of this README
+No setup required - just start chatting with AgroAssist!
+
+### Option 2: Google Colab (Recommended for Quick Testing)
+
+1. **Open Notebook**: Access the Colab notebook from the repository
 2. **Enable GPU**: 
    - Go to `Runtime > Change runtime type`
    - Select `GPU` from Hardware accelerator dropdown
@@ -404,9 +359,22 @@ Monitor plants regularly for early detection and intervention.
 
 ---
 
+### Example 3: Real User Interaction
+
+![User Question](Images/Screenshot%202026-02-16%20173532.png)
+*User asking about Growing Tomatoes*
+
+
+
+
+
 ## Experimental Results
 
 We conducted four systematic experiments to optimize model performance through hyperparameter tuning.
+**Experiment 1 (Baseline)**: Standard LoRA configuration with balanced hyperparameters for baseline performance
+**Experiment 2 (High Rank)**: Doubled LoRA rank (128) to test increased model capacity vs computational cost
+**Experiment 3 (Low LR)**: Reduced learning rate (5e-5) to evaluate slower, more conservative training
+**Experiment 4 (Extended)**: Extended training to 5 epochs to maximise performance without overfitting
 
 ### Experiment Overview
 
@@ -417,6 +385,15 @@ We conducted four systematic experiments to optimize model performance through h
 | Exp 3: Low LR | LR=5e-5, Rank=64, Epochs=3 | 19.7 min | 0.1477 | 0.2037 | 4.59 |
 | **Exp 4: Extended** | **LR=2e-4, Rank=64, Epochs=5** | **32.3 min** | **0.1924** | **0.2403** | **3.88** |
 
+### Hyperparameter Impact Analysis
+
+#### Impact Summary
+
+| Hyperparameter | Variation | BLEU Impact | Conclusion |
+|---------------|-----------|-------------|------------|
+| **Learning Rate** | 2e-4 vs 5e-5 | **-13.70%** | Most impactful - 2e-4 is optimal |
+| **Training Duration** | 3 vs 5 epochs | **+12.40%** | Significant positive impact |
+| **LoRA Rank** | 64 vs 128 | +2.39% | Marginal improvement, high cost |
 
 **Most Impactful Parameter**: Learning Rate (13.70% absolute impact)
 
@@ -431,7 +408,7 @@ We conducted four systematic experiments to optimize model performance through h
 | Exp 3 | 0.1477 | 19.7 min | 0.0075 |
 | **Exp 4** | **0.1924** | **32.3 min** | **0.0060** |
 
-**Observation**: While Experiment 1 has the best training efficiency, Experiment 4 achieves significantly better final performance (+12.4% BLEU) with an acceptable training time increase.
+**Observation**: While Experiment 1 has best training efficiency, Experiment 4 achieves significantly better final performance (+12.4% BLEU) with acceptable training time increase.
 
 ### Model Selection Rationale
 
@@ -444,6 +421,7 @@ We conducted four systematic experiments to optimize model performance through h
 4. No severe overfitting observed
 5. Best qualitative response quality
 
+---
 
 ## Contributing
 
@@ -476,9 +454,8 @@ We welcome contributions from the community! Here's how you can help improve Agr
 
 1. **Fork the Repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/agroassist.git
-   cd agroassist
-   git remote add upstream https://github.com/ORIGINAL_AUTHOR/agroassist.git
+   git clone https://github.com/Pam-Pam29/AgroAssist.git
+   cd AgroAssist
    ```
 
 2. **Create a Feature Branch**
@@ -496,12 +473,6 @@ We welcome contributions from the community! Here's how you can help improve Agr
    git add .
    git commit -m "Add: Clear description of your changes"
    ```
-   
-   Commit message format:
-   - `Add: ` for new features
-   - `Fix: ` for bug fixes
-   - `Update: ` for updates to existing features
-   - `Docs: ` for documentation changes
 
 5. **Push to Your Fork**
    ```bash
@@ -515,10 +486,13 @@ We welcome contributions from the community! Here's how you can help improve Agr
    - Describe your changes clearly
    - Wait for review
 
+---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
 
 ## Acknowledgments
 
@@ -529,13 +503,6 @@ This project is licensed under the MIT License.
 - **Microsoft Research**: For developing LoRA (Hu et al., 2021)
 - **Dataset Contributors**: Mahesh2841 for the Agriculture dataset on Hugging Face
 
-### Tools and Libraries
-
-- **PyTorch**: Deep learning framework
-- **PEFT (Parameter-Efficient Fine-Tuning)**: LoRA implementation
-- **Gradio**: User interface framework
-- **BitsAndBytes**: Quantization library
-- **Evaluate**: Metrics computation
 
 ### Academic References
 
@@ -547,4 +514,4 @@ This project is licensed under the MIT License.
 
 4. Papineni, K., Roukos, S., Ward, T., & Zhu, W. J. (2002). **BLEU: a method for automatic evaluation of machine translation**. In Proceedings of ACL.
 
-5. Lin, C. Y. (2004). **ROUGE: A Package for Automatic Evaluation of Summaries**. In Text Summarisation Branches Out.
+5. Lin, C. Y. (2004). **ROUGE: A Package for Automatic Evaluation of Summaries**. In Text Summarization Branches Out.
