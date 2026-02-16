@@ -25,8 +25,7 @@ AgroAssist addresses the critical challenge of agricultural knowledge access in 
 ### Interactive Chat Interface
 <img width="1347" height="618" alt="Screenshot 2026-02-16 173818" src="https://github.com/user-attachments/assets/84460ae3-3a7f-4cc6-9e2b-263f08c8052a" />
 
-![Gradio Interface](Images/Screenshot%202026-02-16%20173818.png)
-*AgroAssist chat interface showing real-time agricultural advisory*
+             *AgroAssist chat interface showing real-time agricultural advisory*
 
 ---
 
@@ -363,10 +362,12 @@ Monitor plants regularly for early detection and intervention.
 
 ### Example 3: Real User Interaction
 
-![User Question](Images/Screenshot%202026-02-16%20173532.png)
-*User asking about Growing Tomatoes*
+<img width="743" height="420" alt="Screenshot 2026-02-16 173532" src="https://github.com/user-attachments/assets/fa39ad4d-a5ef-4a0d-99ac-a1a2a10f34b5" />
+                     *User asking about Growing Tomatoes*
 
-
+                     
+<img width="1288" height="569" alt="Screenshot 2026-02-16 175113" src="https://github.com/user-attachments/assets/5b2370e4-9e03-42e7-9fc6-4c6ce7f653c3" />
+                  *User asking about the water uptake of Cucumber*
 
 
 
