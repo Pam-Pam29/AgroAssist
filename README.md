@@ -4,6 +4,7 @@
 **AgroAssist** is a domain-specific Large Language Model (LLM) fine-tuned for agricultural advisory services. Built on TinyLlama-1.1B-Chat-v1.0 and optimized using LoRA (Low-Rank Adaptation), it provides expert guidance on farming, crop management, soil health, pest control, and irrigation techniques.
 
 **Live Chatbot**: Try AgroAssist at [https://huggingface.co/spaces/pam-pam29/AGROASSIST](https://huggingface.co/spaces/pam-pam29/AGROASSIST)
+
 **Demo** 
 
 ---
@@ -22,8 +23,9 @@ AgroAssist addresses the critical challenge of agricultural knowledge access in 
 - **Scalable**: Can assist unlimited farmers simultaneously
 
 ### Interactive Chat Interface
+<img width="1347" height="618" alt="Screenshot 2026-02-16 173818" src="https://github.com/user-attachments/assets/84460ae3-3a7f-4cc6-9e2b-263f08c8052a" />
 
-![Gradio Interface]](Images/Screenshot%202026-02-16%20173818.png)
+![Gradio Interface](Images/Screenshot%202026-02-16%20173818.png)
 *AgroAssist chat interface showing real-time agricultural advisory*
 
 ---
