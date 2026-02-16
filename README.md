@@ -363,17 +363,18 @@ Monitor plants regularly for early detection and intervention.
 ### Example 3: Real User Interaction
 
 <img width="743" height="420" alt="Screenshot 2026-02-16 173532" src="https://github.com/user-attachments/assets/fa39ad4d-a5ef-4a0d-99ac-a1a2a10f34b5" />
-                     *User asking about Growing Tomatoes*
-
-                     
+                
 <img width="1288" height="569" alt="Screenshot 2026-02-16 175113" src="https://github.com/user-attachments/assets/5b2370e4-9e03-42e7-9fc6-4c6ce7f653c3" />
-                  *User asking about the water uptake of Cucumber*
+
+<img width="754" height="412" alt="Screenshot 2026-02-16 173635" src="https://github.com/user-attachments/assets/16791429-486e-480e-b0eb-f3d1df32a0cd" />
+
+<img width="1278" height="454" alt="Screenshot 2026-02-16 175226" src="https://github.com/user-attachments/assets/7da0c6ec-2df9-47ce-96d3-09b036833bd9" />
 
 
 
 ## Experimental Results
 
-We conducted four systematic experiments to optimize model performance through hyperparameter tuning.
+We conducted four systematic experiments to optimise model performance through hyperparameter tuning.
 **Experiment 1 (Baseline)**: Standard LoRA configuration with balanced hyperparameters for baseline performance
 **Experiment 2 (High Rank)**: Doubled LoRA rank (128) to test increased model capacity vs computational cost
 **Experiment 3 (Low LR)**: Reduced learning rate (5e-5) to evaluate slower, more conservative training
