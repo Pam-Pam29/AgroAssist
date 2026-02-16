@@ -425,6 +425,18 @@ We conducted four systematic experiments to optimise model performance through h
 4. No severe overfitting observed
 5. Best qualitative response quality
 
+### Note on Model Files
+
+Due to the size of the fine-tuned model files (>100MB), the complete model has been deployed to Hugging Face Spaces rather than stored directly in this GitHub repository. 
+
+**Access the model**:
+- **Live Demo**: [https://huggingface.co/spaces/pam-pam29/AGROASSIST](https://huggingface.co/spaces/pam-pam29/AGROASSIST)
+- **Model Files**: Available in the Hugging Face Space repository
+
+To use the model locally, you can either:
+1. Download the model files from the Hugging Face Space
+2. Run the training notebook to generate your own fine-tuned model
+3. Use the live demo directly without any local setup
 ---
 
 ## Contributing
